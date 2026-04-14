@@ -10,10 +10,6 @@ from .services.ai_service import summarize_text
 @login_required
 def home(request):
     notes = Note.objects.filter(user=request.user).order_by('-created_at')
-
-    # 🔥 DEBUG: check if summary is coming from DB
-    print("NOTES:", list(notes.values()))
-
     return render(request, 'notes/home.html', {'notes': notes})
 
 
@@ -37,22 +33,12 @@ def summarize_note(request, note_id):
     note = get_object_or_404(Note, id=note_id, user=request.user)
 
     try:
-        print("==== DEBUG START ====")
-        print("Content:", note.content)
-
         summary = summarize_text(note.content)
-
-        print("Summary returned:", summary)
-
         note.summary = summary
         note.save()
-
-        print("Saved to DB")
-
         messages.success(request, "Summary generated!")
 
     except Exception as e:
-        print("ERROR OCCURRED:", e)
         messages.error(request, str(e))
 
     return redirect('home')

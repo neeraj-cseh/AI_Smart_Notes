@@ -9,9 +9,17 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+from dotenv import load_dotenv
+import os
+
 
 from pathlib import Path
+load_dotenv()
 
+HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -55,7 +63,7 @@ ROOT_URLCONF = 'smart_notes.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,12 +124,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
-LOGIN_URL = '/admin/login/'
-
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
